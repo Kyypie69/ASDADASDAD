@@ -1,0 +1,623 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Muscle Legends OP Reb Script | KYY Hub",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "KYY Hub",
+   LoadingSubtitle = "by Markyy",
+   Theme = "Amethyst", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = false,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "KYY Hub"
+   },
+
+   Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "KYY | Key",
+      Subtitle = "Secret",
+      Note = "Kiss my ass!", -- Use this to tell the user how to get a key
+      FileName = "KEYS", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"DOFKUPAL"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+	game:GetService("VirtualUser"):CaptureController()
+	game:GetService("VirtualUser"):ClickButton1(Vector2.new())
+	game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+end)
+ 
+for _, portal in pairs(game:GetDescendants()) do
+	if portal.Name == "RobloxForwardPortals" then
+		portal:Destroy()
+	end
+end
+ 
+game.DescendantAdded:Connect(function(descendant)
+	if descendant.Name == "RobloxForwardPortals" then
+		descendant:Destroy()
+	end
+end)
+ 
+local VirtualUser = game:GetService('VirtualUser')
+game:GetService('Players').LocalPlayer.Idled:Connect(function()
+	VirtualUser:CaptureController()
+	VirtualUser:ClickButton2(Vector2.new())
+end)
+ 
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local CoreGui = game:GetService("CoreGui")
+ 
+local LP = Players.LocalPlayer
+local killingConnection
+_G.fastHitActive = false
+local whitelist = {}
+local isHitting = false
+local GuiVisible = true
+local parts = {}
+local partSize = 2048
+local totalDistance = 50000
+local startPosition = Vector3.new(-2, - 9.5, -2)
+local numberOfParts = math.ceil(totalDistance / partSize)
+local rockOriginal
+local rockSize
+local rockConnection
+local function createParts()
+	for x = 0, numberOfParts - 1 do
+		for z = 0, numberOfParts - 1 do
+			local newPartSide = Instance.new("Part")
+			newPartSide.Size = Vector3.new(partSize, 1, partSize)
+			newPartSide.Position = startPosition + Vector3.new(x * partSize, 0, z * partSize)
+			newPartSide.Anchored = true
+			newPartSide.Transparency = 1
+			newPartSide.CanCollide = true
+			newPartSide.Name = "Part_Side_" .. x .. "_" .. z
+			newPartSide.Parent = workspace
+			table.insert(parts, newPartSide)
+			local newPartLeftRight = Instance.new("Part")
+			newPartLeftRight.Size = Vector3.new(partSize, 1, partSize)
+			newPartLeftRight.Position = startPosition + Vector3.new(- x * partSize, 0, z * partSize)
+			newPartLeftRight.Anchored = true
+			newPartLeftRight.Transparency = 1
+			newPartLeftRight.CanCollide = true
+			newPartLeftRight.Name = "Part_LeftRight_" .. x .. "_" .. z
+			newPartLeftRight.Parent = workspace
+			table.insert(parts, newPartLeftRight)
+			local newPartUpLeft = Instance.new("Part")
+			newPartUpLeft.Size = Vector3.new(partSize, 1, partSize)
+			newPartUpLeft.Position = startPosition + Vector3.new(- x * partSize, 0, - z * partSize)
+			newPartUpLeft.Anchored = true
+			newPartUpLeft.Transparency = 1
+			newPartUpLeft.CanCollide = true
+			newPartUpLeft.Name = "Part_UpLeft_" .. x .. "_" .. z
+			newPartUpLeft.Parent = workspace
+			table.insert(parts, newPartUpLeft)
+			local newPartUpRight = Instance.new("Part")
+			newPartUpRight.Size = Vector3.new(partSize, 1, partSize)
+			newPartUpRight.Position = startPosition + Vector3.new(x * partSize, 0, - z * partSize)
+			newPartUpRight.Anchored = true
+			newPartUpRight.Transparency = 1
+			newPartUpRight.CanCollide = true
+			newPartUpRight.Name = "Part_UpRight_" .. x .. "_" .. z
+			newPartUpRight.Parent = workspace
+			table.insert(parts, newPartUpRight)
+		end
+	end
+end
+ 
+local function makePartsWalkthrough()
+	for _, part in ipairs(parts) do
+		if part and part.Parent then
+			part.CanCollide = false
+		end
+	end
+end
+ 
+local function makePartsSolid()
+	for _, part in ipairs(parts) do
+		if part and part.Parent then
+			part.CanCollide = true
+		end
+	end
+end
+ 
+local MainTab = Window:CreateTab("Home", "book-down")
+local MainSection = MainTab:CreateSection("FAST REB | FAST GRIND")
+
+Rayfield:Notify({
+   Title = "KUPAL KA BA BOSS?",
+   Content = "OO NGANI!",
+   Duration = 6,
+   Image = "rewind",
+})
+
+local Dropdown = MainTab:CreateDropdown({
+    Name = "Select Pack Pets",
+    Options = {
+        "Wild Wizard",
+        "Mighty Monster",
+        "Chaos Sorcerer",
+        "Small Fry"
+    },
+    CurrentOption = "",
+    Flag = "PackPetDropdown",
+    Callback = function(text)
+        -- unequip everything first
+        local petsFolder = game.Players.LocalPlayer.petsFolder
+        for _, folder in ipairs(petsFolder:GetChildren()) do
+            if folder:IsA("Folder") then
+                for _, pet in ipairs(folder:GetChildren()) do
+                    game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("unequipPet", pet)
+                end
+            end
+        end
+        task.wait(0.2)
+
+        -- collect pets to equip
+        local petsToEquip = {}
+        for _, pet in ipairs(game.Players.LocalPlayer.petsFolder.Unique:GetChildren()) do
+            if pet.Name == text then
+                table.insert(petsToEquip, pet)
+            end
+        end
+
+        -- equip up to 8
+        for i = 1, math.min(8, #petsToEquip) do
+            game:GetService("ReplicatedStorage").rEvents.equipPetEvent:FireServer("equipPet", petsToEquip[i])
+            task.wait(0.1)
+        end
+    end
+})
+
+local Button = MainTab:CreateButton({
+   Name = "Low FPS & Graphics",
+   CurrentValue = false,
+   Flag = "Toggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      for _, v in pairs(game:GetDescendants()) do
+			if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Smoke") or v:IsA("Fire") or v:IsA("Sparkles") then
+				v.Enabled = false
+			end
+		end
+		local lighting = game:GetService("Lighting")
+		lighting.GlobalShadows = false
+		lighting.FogEnd = 9e9
+		for _, v in pairs(workspace:GetDescendants()) do
+			if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
+				v.Material = Enum.Material.SmoothPlastic
+				if v:IsA("Texture") then
+					v:Destroy()
+				end
+			end
+		end
+		settings().Rendering.QualityLevel = 1
+   end,
+})
+
+local Toggle = MainTab:CreateToggle({
+   Name = "Farm Rebirth | PACKS ONLY",
+   CurrentValue = false,
+   Flag = "Toggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+        local Players = game:GetService("Players")
+local whitelist = { 8196857372, 2523643363, 2815154822, 3706292605, 2664725473, 3884730023, 1773186022, 1992531036 } 
+
+local player = game.Players.LocalPlayer
+local playerId = player.UserId
+
+print("👤 Player ID detected:", playerId)
+
+local isWhitelisted = false
+for _, id in ipairs(whitelist) do
+    if id == playerId then
+        isWhitelisted = true
+        break
+    end
+end
+
+if not isWhitelisted then
+    warn("Access denied for ID:", playerId)
+    player:Kick("KUPAL KA BA BOSS?! DOF na Maaasim 🤢")
+    return
+end
+
+        local a=game:GetService("ReplicatedStorage")local b=game:GetService("Players")local c=b.LocalPlayer;local d=function(e)local f=c.petsFolder;for g,h in pairs(f:GetChildren())do if h:IsA("Folder")then for i,j in pairs(h:GetChildren())do a.rEvents.equipPetEvent:FireServer("unequipPet",j)end end end;task.wait(.1)end;local k=function(l)d()task.wait(.1)for m,n in pairs(c.petsFolder.Unique:GetChildren())do if n.Name==l then a.rEvents.equipPetEvent:FireServer("equipPet",n)end end end;local o=function(p)local q=workspace.machinesFolder:FindFirstChild(p)if not q then for r,s in pairs(workspace:GetChildren())do if s:IsA("Folder")and s.Name:find("machines")then q=s:FindFirstChild(p)if q then break end end end end;return q end;local t=function()local u=game:GetService("VirtualInputManager")u:SendKeyEvent(true,"E",false,game)task.wait(.1)u:SendKeyEvent(false,"E",false,game)end;task.spawn(function()while true do local v=c.leaderstats.Rebirths.Value;local w=10000+(5000*v)if c.ultimatesFolder:FindFirstChild("Golden Rebirth")then local x=c.ultimatesFolder["Golden Rebirth"].Value;w=math.floor(w*(1-(x*0.1)))end;d()task.wait(.1)k("Swift Samurai")while c.leaderstats.Strength.Value<w do for y=1,10 do c.muscleEvent:FireServer("rep")end;task.wait()end;d()task.wait(.1)k("Tribal Overlord")local z=o("Jungle Bar Lift")if z and z:FindFirstChild("interactSeat")then c.Character.HumanoidRootPart.CFrame=z.interactSeat.CFrame*CFrame.new(0,3,0)repeat task.wait(.1)t()until c.Character.Humanoid.Sit end;local A=c.leaderstats.Rebirths.Value;repeat a.rEvents.rebirthRemote:InvokeServer("rebirthRequest")task.wait(.1)until c.leaderstats.Rebirths.Value>A;task.wait()end end)
+   end,
+})
+
+local Toggle = MainTab:CreateToggle({
+   Name = "Fast Grind | No Rebirth",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+local a = game:GetService("ReplicatedStorage")
+local b = game:GetService("Players")
+local c = b.LocalPlayer
+ 
+-- Fun??o para equipar apenas o "Swift Samurai" (sem desequipar nada antes)
+local function k()
+    for m, n in pairs(c.petsFolder.Unique:GetChildren()) do
+        if n.Name == "Swift Samurai" then
+            a.rEvents.equipPetEvent:FireServer("equipPet", n)
+        end
+    end
+end
+ 
+-- Loop principal focado apenas em ganhar Strength rapidamente
+task.spawn(function()
+    k() -- Equipa o Swift Samurai no come?o e n?o troca mais
+ 
+    while true do
+        -- Farm de Strength (agora com 0.001s de delay)
+        for y = 1, 10 do
+            c.muscleEvent:FireServer("rep")
+        end
+        task.wait(0.001) -- Super rápido
+    end
+end)
+   end,
+})
+
+local FarmTab = Window:CreateTab("Farm", "rewind")
+local Section = FarmTab:CreateSection("AUTO FARM")
+
+local infiniteRebirthLoop = nil
+local targetToggle = FarmTab:CreateToggle({
+   Name = "Auto Rebirth",
+   CurrentValue = false,
+   Flag = "Toggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+       if Value then
+			infiniteRebirthLoop = task.spawn(function()
+				while task.wait(0.1) do
+					game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer("rebirthRequest")
+				end
+			end)
+		else
+			if infiniteRebirthLoop then
+				task.cancel(infiniteRebirthLoop)
+				infiniteRebirthLoop = nil
+			end
+		end
+	end
+})     
+
+local Toggle = FarmTab:CreateToggle({
+   Name = "Auto Weight",
+   CurrentValue = false,
+   Flag = "Toggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      _G.AutoWeight = Value
+		if Value then
+			local weightTool = game.Players.LocalPlayer.Backpack:FindFirstChild("Weight")
+			if weightTool then
+				game.Players.LocalPlayer.Character.Humanoid:EquipTool(weightTool)
+			end
+		else
+			local character = game.Players.LocalPlayer.Character
+			local equipped = character:FindFirstChild("Weight")
+			if equipped then
+				equipped.Parent = game.Players.LocalPlayer.Backpack
+			end
+		end
+		while _G.AutoWeight do
+			game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+			task.wait(0)
+		end
+   end,
+})
+
+local Toggle = FarmTab:CreateToggle({
+   Name = "Auto Push Ups",
+   CurrentValue = false,
+   Flag = "Toggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      _G.AutoPushups = Value
+		if Value then
+			local pushupsTool = game.Players.LocalPlayer.Backpack:FindFirstChild("Pushups")
+			if pushupsTool then
+				game.Players.LocalPlayer.Character.Humanoid:EquipTool(pushupsTool)
+			end
+		else
+			local character = game.Players.LocalPlayer.Character
+			local equipped = character:FindFirstChild("Pushups")
+			if equipped then
+				equipped.Parent = game.Players.LocalPlayer.Backpack
+			end
+		end
+		while _G.AutoPushups do
+			game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+			task.wait(0)
+		end
+   end,
+})
+
+local Toggle = FarmTab:CreateToggle({
+   Name = "Auto Punch",
+   CurrentValue = false,
+   Flag = "Toggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      _G.fastHitActive = Value
+		if Value then
+			local function equipAndModifyPunch()
+				while _G.fastHitActive do
+					local player = game.Players.LocalPlayer
+					local punch = player.Backpack:FindFirstChild("Punch")
+					if punch then
+						punch.Parent = player.Character
+						if punch:FindFirstChild("attackTime") then
+							punch.attackTime.Value = 0
+						end
+					end
+					wait(0)
+				end
+			end
+			local function rapidPunch()
+				while _G.fastHitActive do
+					local player = game.Players.LocalPlayer
+					player.muscleEvent:FireServer("punch", "rightHand")
+					player.muscleEvent:FireServer("punch", "leftHand")
+					local character = player.Character
+					if character then
+						local punchTool = character:FindFirstChild("Punch")
+						if punchTool then
+							punchTool:Activate()
+						end
+					end
+					wait(0)
+				end
+			end
+			coroutine.wrap(equipAndModifyPunch)()
+			coroutine.wrap(rapidPunch)()
+		else
+			local character = game.Players.LocalPlayer.Character
+			local equipped = character:FindFirstChild("Punch")
+			if equipped then
+				equipped.Parent = game.Players.LocalPlayer.Backpack
+			end
+		end
+      while _G.fastHitActive do
+         game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+         wait(0)
+      end
+   end,
+})
+
+local Toggle = FarmTab:CreateToggle({
+	Name = "Fast Tools",
+   CurrentValue = false,
+   Flag = "Toggle5", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+		_G.FastTools = Value
+		local defaultSpeeds = {
+			{
+				"Punch",
+				"attackTime",
+				Value and 0 or 0.35
+			},
+			{
+				"Pushups",
+				"repTime",
+				Value and 0 or 1
+			},
+			{
+				"Weight",
+				"repTime",
+				Value and 0 or 1
+			}
+		}
+		local player = game.Players.LocalPlayer
+		local backpack = player:WaitForChild("Backpack")
+		for _, toolInfo in ipairs(defaultSpeeds) do
+			local tool = backpack:FindFirstChild(toolInfo[1])
+			if tool and tool:FindFirstChild(toolInfo[2]) then
+				tool[toolInfo[2]].Value = toolInfo[3]
+			end
+			local equippedTool = player.Character and player.Character:FindFirstChild(toolInfo[1])
+			if equippedTool and equippedTool:FindFirstChild(toolInfo[2]) then
+				equippedTool[toolInfo[2]].Value = toolInfo[3]
+			end
+		end
+	end
+})
+
+local MiscTab = Window:CreateTab("Misc", "rewind")
+local MiscSection = MiscTab:CreateSection("Anti AFK | Auto Eat | Hide Frame")
+
+local Button = MiscTab:CreateButton({
+   Name = "Anti AFK",
+   CurrentValue = false,
+   Flag = "Toggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+        wait(0.5)local ba=Instance.new("ScreenGui")
+local ca=Instance.new("TextLabel")local da=Instance.new("Frame")
+local _b=Instance.new("TextLabel")local ab=Instance.new("TextLabel")ba.Parent=game.CoreGui
+ba.ZIndexBehavior=Enum.ZIndexBehavior.Sibling;ca.Parent=ba;ca.Active=true
+ca.BackgroundColor3=Color3.new(0.176471,0.176471,0.176471)ca.Draggable=true
+ca.Position=UDim2.new(0.698610067,0,0.098096624,0)ca.Size=UDim2.new(0,370,0,52)
+ca.Font=Enum.Font.SourceSansSemibold;ca.Text="Anti AFK Script"ca.TextColor3=Color3.new(0,1,1)
+ca.TextSize=22;da.Parent=ca
+da.BackgroundColor3=Color3.new(0.196078,0.196078,0.196078)da.Position=UDim2.new(0,0,1.0192306,0)
+da.Size=UDim2.new(0,370,0,107)_b.Parent=da
+_b.BackgroundColor3=Color3.new(0.176471,0.176471,0.176471)_b.Position=UDim2.new(0,0,0.800455689,0)
+_b.Size=UDim2.new(0,370,0,21)_b.Font=Enum.Font.Arial;_b.Text="AFK KYY"
+_b.TextColor3=Color3.new(0,1,1)_b.TextSize=20;ab.Parent=da
+ab.BackgroundColor3=Color3.new(0.176471,0.176471,0.176471)ab.Position=UDim2.new(0,0,0.158377,0)
+ab.Size=UDim2.new(0,370,0,44)ab.Font=Enum.Font.ArialBold;ab.Text="Status: Active"
+ab.TextColor3=Color3.new(0,1,1)ab.TextSize=20;local bb=game:service'VirtualUser'
+game:service'Players'.LocalPlayer.Idled:connect(function()
+bb:CaptureController()bb:ClickButton2(Vector2.new())
+ab.Text="NO ONE CAN STOP US"wait(2)ab.Text="Active"end)
+   end,
+})
+
+local Toggle = MiscTab:CreateToggle({
+   Name = "Auto Protein Egg",
+   CurrentValue = false,
+   Flag = "Toggle3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+        local LocalPlayer = game:GetService("Players").LocalPlayer local muscleEvent = LocalPlayer:WaitForChild("muscleEvent") while true do wait(1800) muscleEvent:FireServer("proteinEgg", LocalPlayer.Backpack:FindFirstChild("Protein Egg")) end
+   end,
+})
+
+local Toggle = MiscTab:CreateToggle({
+   Name = "Auto Tropical Shake",
+   CurrentValue = false,
+   Flag = "Toggle4", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+        local LocalPlayer = game:GetService("Players").LocalPlayer local muscleEvent = LocalPlayer:WaitForChild("muscleEvent") while true do wait(10) muscleEvent:FireServer("ptropicalShake", LocalPlayer.Backpack:FindFirstChild("Tropical Shake")) end
+   end,
+})
+
+local Toggle = MiscTab:CreateToggle({
+	Name = "Hide Frames",
+   CurrentValue = false,
+   Flag = "Toggle5", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+		local rSto = game:GetService("ReplicatedStorage")
+		for _, obj in pairs(rSto:GetChildren()) do
+			if obj.Name:match("Frame$") then
+				obj.Visible = not Value
+			end
+		end
+   end,
+})
+
+local Toggle = MiscTab:CreateToggle({
+   Name = "6Lock Position9",
+   CurrentValue = false,
+   Flag = "Toggle38", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+            if Value then
+			local currentPos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+			getgenv().posLock = game:GetService("RunService").Heartbeat:Connect(function()
+				if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentPos
+				end
+			end)
+		else
+			if getgenv().posLock then
+				getgenv().posLock:Disconnect()
+			end
+		end
+	end
+})
+
+local IslandTab = Window:CreateTab("Island", "rewind")
+local Section = IslandTab:CreateSection("Rocks Farm")
+local selectrock = ""
+local function gettool()
+	local player = game.Players.LocalPlayer
+	local tool = player.Backpack:FindFirstChild(selectrock)
+	if tool then
+		tool.Parent = player.Character
+	end
+end
+
+local Toggle = IslandTab:CreateToggle({
+   Name = "Muscle King Rock",
+   CurrentValue = false,
+   Flag = "Toggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      selectrock = "Muscle King Gym Rock"
+		getgenv().autoFarm = Value
+		while getgenv().autoFarm do
+			task.wait()
+			if game:GetService("Players").LocalPlayer.Durability.Value >= 5000000 then
+				for i, v in pairs(game:GetService("Workspace").machinesFolder:GetDescendants()) do
+					if v.Name == "neededDurability" and v.Value == 5000000 and game.Players.LocalPlayer.Character:FindFirstChild("LeftHand") and game.Players.LocalPlayer.Character:FindFirstChild("RightHand") then
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.RightHand, 0)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.RightHand, 1)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.LeftHand, 0)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.LeftHand, 1)
+						gettool()
+					end
+				end
+			end
+		end
+   end,
+})
+
+function gettool()
+	for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name == "Punch" and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+			game.Players.LocalPlayer.Character.Humanoid:EquipTool(v)
+		end
+	end
+	game:GetService("Players").LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
+	game:GetService("Players").LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
+end
+
+local Toggle = IslandTab:CreateToggle({
+   Name = "Jungle Rock",
+   CurrentValue = false,
+   Flag = "Toggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      selectrock = "Ancient Jungle Rock"
+		getgenv().autoFarm = Value
+		while getgenv().autoFarm do
+			task.wait()
+			if game:GetService("Players").LocalPlayer.Durability.Value >= 10000000 then
+				for i, v in pairs(game:GetService("Workspace").machinesFolder:GetDescendants()) do
+					if v.Name == "neededDurability" and v.Value == 10000000 and game.Players.LocalPlayer.Character:FindFirstChild("LeftHand") and game.Players.LocalPlayer.Character:FindFirstChild("RightHand") then
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.RightHand, 0)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.RightHand, 1)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.LeftHand, 0)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.LeftHand, 1)
+						gettool()
+					end
+				end
+			end
+		end
+   end,
+})
+
+local Toggle = IslandTab:CreateToggle({
+   Name = "Legends Gym",
+   CurrentValue = false,
+   Flag = "Toggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      selectrock = "Legend Gym Rock"
+		getgenv().autoFarm = Value
+		while getgenv().autoFarm do
+			task.wait()
+			if game:GetService("Players").LocalPlayer.Durability.Value >= 1000000 then
+				for i, v in pairs(game:GetService("Workspace").machinesFolder:GetDescendants()) do
+					if v.Name == "neededDurability" and v.Value == 1000000 and game.Players.LocalPlayer.Character:FindFirstChild("LeftHand") and game.Players.LocalPlayer.Character:FindFirstChild("RightHand") then
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.RightHand, 0)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.RightHand, 1)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.LeftHand, 0)
+						firetouchinterest(v.Parent.Rock, game:GetService("Players").LocalPlayer.Character.LeftHand, 1)
+						gettool()
+					end
+				end
+			end
+		end
+   end,
+})
+
+local SettingsTab = Window:CreateTab("Settings", "rewind")
+local Section = SettingsTab:CreateSection("Destroy GUI")
+
+local Button = SettingsTab:CreateButton({
+   Name = "Destroy GUI",
+   CurrentValue = false,
+   Flag = "Toggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      Rayfield:Destroy()
+   end,
+})
