@@ -1,11 +1,4 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyypie69/Library.UI/refs/heads/main/Speedhub.UI.lua"))()
-local VirtualUser = game:GetService("VirtualUser")
-game:GetService("Players").LocalPlayer.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    wait(1)
-    VirtualUser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-end)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
@@ -168,113 +161,17 @@ local Window = Library:CreateWindow({
 --------------------------------------------------------------------
 -- 4.  Tabs  (same order as UILib)
 --------------------------------------------------------------------
-local farmTab  = Window:AddTab({Title = "Farm OP",    Icon = "lightning"})        -- lightning bolt
-local statsTab = Window:AddTab({Title = "Stats Farm", Icon = "bar-chart-2"})-- stats bars
-local rockTab  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
-local killTab  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
-local teleportTab  = Window:AddTab({Title = "Teleport",   Icon = "move"})       -- directional arrows
-local crystalTab  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- crystal shape
-local giftTab  = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
-local creditTab  = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
+local Farm  = Window:AddTab({Title = "Farm OP",    Icon = ""})        -- lightning bolt
+local Stats = Window:AddTab({Title = "Stats Farm", Icon = "bar-chart-2"})-- stats bars
+local Rock  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
+local Killer  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
+local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "move"})       -- directional arrows
+local Crystal  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- crystal shape
+local Gift  = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
+local Credits  = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
 
-local player = game.Players.LocalPlayer
-local leaderstats = player:WaitForChild("leaderstats")
-local rebirthsStat = leaderstats:WaitForChild("Rebirths")
 
--- Ensure RebirthFolder is defined (assuming it's a folder in your GUI)
-local RebirthFolder = farmTab:AddSection("Rebirth Tracker") -- or wherever it should go
-
--- Formatting functions
-local function FormatShort(n)
-	if type(n) ~= "number" then return tostring(n) end
-	if n >= 1e9 then
-		return (string.format('%.1f', n/1e9)):gsub('%.0','') .. 'B'
-	elseif n >= 1e6 then
-		return (string.format('%.1f', n/1e6)):gsub('%.0','') .. 'M'
-	elseif n >= 1e3 then
-		return (string.format('%.1f', n/1e3)):gsub('%.0','') .. 'K'
-	else
-		return tostring(n)
-	end
-end
-
-local function FormatGain(n)
-	return "+" .. FormatShort(n)
-end
-
-local function FormatRate(v)
-	if type(v) ~= "number" then return tostring(v) end
-	if v < 1 then
-		return string.format("%.2f", v)
-	elseif v < 1000 then
-		return string.format("%.2f", v)
-	else
-		return FormatShort(v)
-	end
-end
-
--- Tracker variables
-local startTime = tick()
-local sessionRebirths = rebirthsStat.Value
-
--- UI Labels
-local timeLabel = RebirthFolder:AddLabel("Time")
-timeLabel.TextSize = 26
-timeLabel.Font = Enum.Font.PatrickHand
-
-local stopwatchLabel = RebirthFolder:AddLabel("0d 0h 0m 0s")
-stopwatchLabel.TextSize = 26
-stopwatchLabel.Font = Enum.Font.PatrickHand
-
-local currentLabel = RebirthFolder:AddLabel("Current: 0")
-currentLabel.TextSize = 26
-currentLabel.Font = Enum.Font.PatrickHand
-
-local gainedLabel = RebirthFolder:AddLabel("Gained: +0")
-gainedLabel.TextSize = 26
-gainedLabel.Font = Enum.Font.PatrickHand
-
-local rpmLabel = RebirthFolder:AddLabel("Rebirths / Min: 0")
-rpmLabel.TextSize = 26
-rpmLabel.Font = Enum.Font.PatrickHand
-
-local rphLabel = RebirthFolder:AddLabel("Rebirths / Hour: 0")
-rphLabel.TextSize = 26
-rphLabel.Font = Enum.Font.PatrickHand
-
--- Rate calculation
-local function calculateRates(gained, elapsedSeconds)
-	if elapsedSeconds <= 0 then return 0, 0 end
-	local minutes = elapsedSeconds / 60
-	local hours = elapsedSeconds / 3600
-	local rpm = gained / minutes
-	local rph = gained / hours
-	return rpm, rph
-end
-
--- Update loop
-task.spawn(function()
-	while task.wait(1) do
-		local elapsed = tick() - startTime
-		local days = math.floor(elapsed / 86400)
-		local hours = math.floor((elapsed % 86400) / 3600)
-		local minutes = math.floor((elapsed % 3600) / 60)
-		local seconds = math.floor(elapsed % 60)
-		stopwatchLabel.Text = string.format("%dd %dh %dm %ds", days, hours, minutes, seconds)
-
-		local currentRebirths = rebirthsStat.Value
-		local gainedRebirths = currentRebirths - sessionRebirths
-
-		currentLabel.Text = "Current: " .. FormatShort(currentRebirths)
-		gainedLabel.Text = "Gained: " .. FormatGain(gainedRebirths)
-
-		local rpm, rph = calculateRates(gainedRebirths, elapsed)
-		rpmLabel.Text = "Rebirths / Min: " .. FormatRate(rpm)
-		rphLabel.Text = "Rebirths / Hour: " .. FormatRate(rph)
-	end
-end)
-
-   AutoFarm:AddToggle("Fast Rebirth", {
+local Toggle = Tabs.Farm:CreateToggle("Fast Rebirth", {
         Title = "Fast Rebirth",
         Default = false,
         Callback = function(v)
@@ -350,7 +247,7 @@ end)
 end})
       
     -- OP Strength
-    AutoFarm:AddToggle("FAST STRENGTH", {
+ local Toggle = Tabs.Farm:CreateToggle("FAST STRENGTH", {
         Title = "Fast Strength",
         Default = false,
         Callback = function(v)
@@ -370,7 +267,7 @@ end})
     })
 
     -- Anti-Lag
-    AutoFarm:AddToggle("ANTI LAGGING", {
+local Toggle = Tabs.Farm:CreateToggle("ANTI LAGGING", {
         Title = "Anti Lag",
         Default = false,
         Callback = function(State)
@@ -390,7 +287,7 @@ end})
     })
 
     -- Anti-AFK
-    AutoFarm:AddToggle("ANTI AFK", {
+local Toggle = Tabs.Farm:CreateToggle("ANTI AFK", {
         Title = "Anti AFK",
         Default = false,
         Callback = function(state)
@@ -593,7 +490,7 @@ end})
 })
 
     -- Hide All Frames
-    AutoFarm:AddToggle("HIDE FRAMES", {
+local Toggle = Tabs.Farm:CreateToggle("HIDE FRAMES", {
         Title = "Hide Frames",
         Default = false,
         Callback = function(bool)
@@ -607,7 +504,7 @@ end})
     })
 
     -- Auto Spin
-    AutoFarm:AddButton({
+local Toggle = Tabs.Farm:CreateToggle({
         Title = "Auto Spin Fortune",
         Callback = function()
             _G.AutoSpinWheel = true
@@ -622,7 +519,7 @@ end})
     })
 
     -- Equip Swift Samurai
-    AutoFarm:AddButton({
+local Toggle = Tabs.Farm:CreateToggle({
         Title = "Equip Swift Samurai",
         Callback = function()
             print("Equipped 7-8 Swift Samurai")
@@ -667,7 +564,7 @@ end})
 
 
     -- Jungle Squat
-    AutoFarm:AddButton({
+local Toggle = Tabs.Farm:CreateToggle({
         Title = "Go Jungle Squat",
         Callback = function()
             local char = LocalPlayer.Character
@@ -691,8 +588,8 @@ end})
 --------------------------------------------------------------------
 -- 6.  Stats Farm  (same labels & timers)
 --------------------------------------------------------------------
-    local StatsFarm = StatsFarm:AddSection("Track Stats")
-    local player = game.Players.LocalPlayer
+    local features = Tabs.Stats:AddSection("Track Stats")
+local player = game.Players.LocalPlayer
 local leaderstats = player:WaitForChild("leaderstats")
 local strengthStat = leaderstats:WaitForChild("Strength")
 local durabilityStat = player:WaitForChild("Durability")
