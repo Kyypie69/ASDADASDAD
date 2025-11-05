@@ -274,15 +274,6 @@ end})
         end
     })
 
-    -- Eat Egg 30 min
-    local autoEatEnabled = false
-    AF:AddToggle("Auto Eat Eggs", {
-        Title = "Will Eat Egg 30 mins.",
-        Default = false,
-        Callback = function(v)
-            autoEatEnabled = v
-        end
-    })
 
     -- Anti-Lag
 farmSection:AddToggle("Anti LAG", {
@@ -606,7 +597,7 @@ farmSection:AddToggle("TP Jungle Squat", {
 --------------------------------------------------------------------
 -- 6.  Stats Farm  (same labels & timers)
 --------------------------------------------------------------------
-local farmSection = statsTab:AddSection("Stats")
+local statsSection = statsTab:AddSection("Stats")
 		
 local player = game.Players.LocalPlayer
 local leaderstats = player:WaitForChild("leaderstats")
@@ -730,7 +721,7 @@ task.spawn(function()
     end
 end)
 
- local RockFarm = RockFarm:AddSection("Rock Punch")
+ local rockSection = autoRockTab:AddSection("Rock Punch")
  local function createAutoToolSwitch(toolName, globalVar)
     autoEquipToolsFolder:AddSwitch("Auto " .. toolName, function(Value)
         _G[globalVar] = Value
@@ -764,7 +755,7 @@ createAutoToolSwitch("Handstands", "AutoHandstands")
 createAutoToolSwitch("Situps", "AutoSitups")
 
 
-autoEquipToolsFolder:AddSwitch("Auto Punch", function(Value)
+rockSection:AddSwitch("Auto Punch", function(Value)
     _G.fastHitActive = Value
     
     if Value then
@@ -809,7 +800,7 @@ autoEquipToolsFolder:AddSwitch("Auto Punch", function(Value)
     end
 end)
 
-autoEquipToolsFolder:AddSwitch("Fast Tools", function(Value)
+rockSection:AddSwitch("Fast Tools", function(Value)
     _G.FastTools = Value
     
     local toolSettings = {
@@ -840,7 +831,7 @@ end)
 
 -- ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã¢â‚¬â„¢ NUEVO FOLDER ROCKS
 
-local folder = RockFarm:AddFolder("Rock Farming")
+local folder = autoRockTab:AddFolder("Rock Farming")
  
 local function gettool()
     for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
@@ -1224,7 +1215,7 @@ end
 --------------------------------------------------------------------
 -- 8.  Kills  (whitelist, auto-kill, follow, etc.)
 --------------------------------------------------------------------
-    local Kills = Kills:AddSection("Killer")
+    local killSection = Killer:AddSection("OP Farm")
     local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local playerWhitelist = {}
@@ -1239,12 +1230,12 @@ local autoPunchNoAnim = false
 local targetDropdownItems = {}
 local availableTargets = {}
 
-local titleLabel = Kills:AddLabel("Equip Packs")
+local titleLabel = Killer:AddLabel("Equip Packs")
 titleLabel.TextSize = 14
 titleLabel.Font = Enum.Font.Merriweather 
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-local dropdown = Kills:AddDropdown("Select Pet", function(text)
+local dropdown = Killer:AddDropdown("Select Pet", function(text)
     local petsFolder = game.Players.LocalPlayer.petsFolder
     for _, folder in pairs(petsFolder:GetChildren()) do
         if folder:IsA("Folder") then
@@ -1280,14 +1271,14 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local friendWhitelistActive = false
 
-Kills:AddTextBox("Whitelist", function(text)
+killSection:AddTextBox("Whitelist", function(text)
     local target = Players:FindFirstChild(text)
     if target then
         playerWhitelist[target.Name] = true
     end
 end)
 
-Kills:AddButton("Nan Size", function()
+killSection:AddButton("Nan Size", function()
     local args = {"changeSize", 0/0}
     game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("changeSpeedSizeRemote"):InvokeServer(unpack(args))
 end)
@@ -1301,7 +1292,7 @@ local urls = {
     "https://raw.githubusercontent.com/SadOz8/Stuffs/refs/heads/main/Crack6"
 }
 
-Kills:AddSwitch("Auto Kill", function(bool)
+killSection:AddSwitch("Auto Kill", function(bool)
     autoKill = bool
 
     task.spawn(function()
@@ -1337,14 +1328,14 @@ Kills:AddSwitch("Auto Kill", function(bool)
     end)
 end)
 
-Kills:AddTextBox("UnWhitelist", function(text)
+killSection:AddTextBox("UnWhitelist", function(text)
     local target = Players:FindFirstChild(text)
     if target then
         playerWhitelist[target.Name] = nil
     end
 end)
 
-Kills:AddSwitch("Auto Whitelist Friends", function(state)
+killSection:AddSwitch("Auto Whitelist Friends", function(state)
     friendWhitelistActive = state
 
     if state then
@@ -1375,7 +1366,7 @@ local targetDropdown = Killer:AddDropdown("Select Target", function(name)
     end
 end)
 
-Kills:AddTextBox("Remove Target", function(name)
+killSection:AddTextBox("Remove Target", function(name)
     for i, v in ipairs(targetPlayerNames) do
         if v == name then
             table.remove(targetPlayerNames, i)
@@ -1414,7 +1405,7 @@ Players.PlayerRemoving:Connect(function(player)
     end
 end)
 
-Kills:AddSwitch("Start Kill Target", function(state)
+killSection:AddSwitch("Start Kill Target", function(state)
     killTarget = state
 
     task.spawn(function()
@@ -1478,7 +1469,7 @@ Players.PlayerRemoving:Connect(function(player)
     end
 end)
 
-Kills:AddSwitch("View Player", function(bool)
+killSection:AddSwitch("View Player", function(bool)
     spying = bool
     if not spying then
         local cam = workspace.CurrentCamera
@@ -1499,7 +1490,7 @@ Kills:AddSwitch("View Player", function(bool)
     end)
 end)
                                                         
-Kills:AddSwitch("AutoHitNoAnim]", function(state)
+killSection:AddSwitch("AutoHitNoAnim]", function(state)
 	autoPunchNoAnim = state
 	task.spawn(function()
 		while autoPunchNoAnim do
@@ -1518,7 +1509,7 @@ Kills:AddSwitch("AutoHitNoAnim]", function(state)
 	end)
 end)
 
-Kills:AddSwitch("Quick Hit", function(state)
+killSection:AddSwitch("Quick Hit", function(state)
 	_G.autoPunchActive = state
 	if state then
 		task.spawn(function()
@@ -1553,7 +1544,7 @@ end)
 
 
 local godModeToggle = false
-Kills:AddSwitch("God Mode", function(State)
+killSection:AddSwitch("God Mode", function(State)
     godModeToggle = State
     if State then
         task.spawn(function()
@@ -1588,7 +1579,7 @@ function followPlayer(targetPlayer)
 end
 
 -- Dropdown dinÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡mico de jugadores
-local followDropdown = Kills:AddDropdown("Follow Player(TP)", function(selected)
+local followDropdown = Killer:AddDropdown("Follow Player(TP)", function(selected)
     if selected and selected ~= "" then
         local target = Players:FindFirstChild(selected)
         if target then
@@ -1630,7 +1621,7 @@ Players.PlayerRemoving:Connect(function(player)
 end)
 
 -- BotÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n para dejar de seguir
-Kills:AddButton("Unfollow", function()
+killSection:AddButton("Unfollow", function()
     following = false
     followTarget = nil
     print("Stopped following")
@@ -1654,7 +1645,7 @@ end)
 
 local godDamageActive = false
 
-Kills:AddSwitch("Damage With Godmode", function(state)
+killSection:AddSwitch("Damage With Godmode", function(state)
     godDamageActive = state
     if state then
         task.spawn(function()
@@ -1688,7 +1679,7 @@ end)
 
 
 
-local button = Kills:AddButton("freeze Water", function()
+local button = Killer:AddButton("freeze Water", function()
    
     local WalkPart = Instance.new("Part")
     WalkPart.Parent = Game.Workspace
@@ -3127,7 +3118,7 @@ end
 --------------------------------------------------------------------
 -- 10.  Crystals  (auto-buy pets & auras)
 --------------------------------------------------------------------
-    local Crystals = Crystals:AddSection("Shop")
+    local crystalSection = Crystal:AddSection("OP Farm")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Crystal data structure with exact names from your original code
@@ -3424,8 +3415,8 @@ end)
 ----------------------------------------------------------------
 -- 11.  Gift  (protein / tropical)
 --------------------------------------------------------------------
-    local Gift = Gift:AddSection("Gifting Egg/Shake")
-    Gift:AddLabel("Gifting Protein egg:").TextSize = 22
+    local giftSection = Gift:AddSection("Gifting Egg/Shake")
+	giftSection:AddLabel("Gifting Protein egg:").TextSize = 22
 
 local proteinEggLabel = Gift:AddLabel("Protein Eggs: 0")
 proteinEggLabel.TextSize = 20
@@ -3454,11 +3445,11 @@ Players.PlayerAdded:Connect(function(plr)
     end
 end)
 
-Gift:AddTextBox("Amount of Eggs", function(text)
+giftSection:AddTextBox("Amount of Eggs", function(text)
     eggCount = tonumber(text) or 0
 end)
 
-Gift:AddButton("Gift Eggs", function()
+giftSection:AddButton("Gift Eggs", function()
     if selectedEggPlayer and eggCount > 0 then
         for i = 1, eggCount do
             local egg = Players.LocalPlayer.consumablesFolder:FindFirstChild("Protein Egg")
@@ -3470,7 +3461,7 @@ Gift:AddButton("Gift Eggs", function()
     end
 end)
 
-Gift:AddLabel("Gifting Tropical Shakes:").TextSize = 22
+giftSection:AddLabel("Gifting Tropical Shakes:").TextSize = 22
 
 local tropicalShakeLabel = Gift:AddLabel("Tropical Shakes: 0")
 tropicalShakeLabel.TextSize = 18
@@ -3499,11 +3490,11 @@ Players.PlayerAdded:Connect(function(plr)
     end
 end)
 
-Gift:AddTextBox("Tropical Shakes gift", function(text)
+giftSection:AddTextBox("Tropical Shakes gift", function(text)
     shakeCount = tonumber(text) or 0
 end)
 
-Gift:AddButton("Gift Tropical Shakes", function()
+giftSection:AddButton("Gift Tropical Shakes", function()
     if selectedShakePlayer and shakeCount > 0 then
         for i = 1, shakeCount do
             local shake = Players.LocalPlayer.consumablesFolder:FindFirstChild("Tropical Shake")
@@ -3596,7 +3587,7 @@ task.spawn(
     end
 )
 
-Gift:AddButton(
+giftSection:AddButton(
     "Eat Everything",
     function(state)
         eatingRunning = state
@@ -3747,7 +3738,7 @@ task.spawn(function()
 end)
 
 do
-    local Credits = Credits:AddSection("Credits")
+    local creditsSection = Credits:AddSection("Credits")
     Cr:AddParagraph({Title = "KYY PIE"})
     Cr:AddParagraph({Title = "GAY SHI"})
     Cr:AddParagraph({Title = "GAY RENS"})
