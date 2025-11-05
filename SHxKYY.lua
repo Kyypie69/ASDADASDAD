@@ -173,8 +173,8 @@ local Window = Library:CreateWindow({
     SubTitle = "Kyy Pie x Cream Fyy",
     Size = UDim2.fromOffset(450,350),
     TabWidth = 160,
-    Acrylic = false,
-    Theme = "SpeedHubX"
+	Theme = "SpeedHubX",
+	Acrylic = false,
 })
 
 
@@ -607,7 +607,6 @@ farmSection:AddToggle("TP Jungle Squat", {
 -- 6.  Stats Farm  (same labels & timers)
 --------------------------------------------------------------------
 local farmSection = statsTab:AddSection("Stats")
-farmSection:AddLabel("Stats Player", {
 		
 local player = game.Players.LocalPlayer
 local leaderstats = player:WaitForChild("leaderstats")
