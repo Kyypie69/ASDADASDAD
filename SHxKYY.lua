@@ -296,11 +296,11 @@ farmSection:AddToggle("Anti LAG", {
     })
 
     -- Anti-AFK
-farmSection:AddButton("Anti AFK", {
+farmSection:AddSwitch("Anti AFK", {
         Title = "Anti AFK",
         Default = false,
         Callback = function(state)
-           local Players = game:GetService("Players")
+local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
 local player = Players.LocalPlayer
  
@@ -365,15 +365,7 @@ textLabel.Text = "ANTI AFK"
 		end
                     },
                     {
-                        Title = "Cancel",
-                        Callback = function()
-                            print("Cancelled the dialog.")
-                        end
-                    }
-                }
-            })
-        end
-    })
+
 
     -- Hide All Frames
 farmSection:AddToggle("Hide Frames", {
@@ -405,7 +397,7 @@ farmSection:AddToggle("Spin Wheel", {
     })
 
     -- Equip Swift Samurai
-farmSection:AddButton("Equip Packs", {
+farmSection:AddSwitch("Equip Packs", {
         Title = "Equip Swift Samurai",
         Callback = function()
         print("Equipped 7-8 Swift Samurai")
@@ -450,7 +442,7 @@ end})
 
 
     -- Jungle Squat
-farmSection:AddButton("TP Jungle Squat", {
+farmSection:AddSwitch("TP Jungle Squat", {
         Title = "Go Jungle Squat",
         Callback = function()
             local char = LocalPlayer.Character
@@ -475,7 +467,9 @@ farmSection:AddButton("TP Jungle Squat", {
 -- 6.  Stats Farm  (same labels & timers)
 --------------------------------------------------------------------
 local statsSection = statsTab:AddSection("Stats")
-		
+statsSection:AddSwitch("Tracker",
+		Title = "Player Stats",
+		Callback = function()
 local player = game.Players.LocalPlayer
 local leaderstats = player:WaitForChild("leaderstats")
 local strengthStat = leaderstats:WaitForChild("Strength")
