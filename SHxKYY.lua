@@ -158,8 +158,8 @@ end)
 --------------------------------------------------------------------
 local Window = Library:CreateWindow({
     Title = "MARKYY PRNHUB",
-    SubTitle = "KYY fucked Billy Gay",
-    Size = UDim2.fromOffset(310,330),
+    SubTitle = "Kyy Pie",
+    Size = UDim2.fromOffset(450,350),
     TabWidth = 160,
     Acrylic = false,
     Theme = "SpeedHubX"
@@ -176,11 +176,16 @@ local teleportTab  = Window:AddTab({Title = "Teleport",   Icon = "move"})       
 local crystalTab  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- crystal shape
 local giftTab  = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
 local creditTab  = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
---------------------------------------------------------------------
--- 5.  Farm OP  (exact feature parity)
---------------------------------------------------------------------
-    local farmSection = farmTab:AddSection("Auto Features")
-	local function FormatShort(n)
+
+local player = game.Players.LocalPlayer
+local leaderstats = player:WaitForChild("leaderstats")
+local rebirthsStat = leaderstats:WaitForChild("Rebirths")
+
+-- Ensure RebirthFolder is defined (assuming it's a folder in your GUI)
+local RebirthFolder = farmTab:AddSection("Rebirth Tracker") -- or wherever it should go
+
+-- Formatting functions
+local function FormatShort(n)
 	if type(n) ~= "number" then return tostring(n) end
 	if n >= 1e9 then
 		return (string.format('%.1f', n/1e9)):gsub('%.0','') .. 'B'
@@ -208,13 +213,11 @@ local function FormatRate(v)
 	end
 end
 
-local player = game.Players.LocalPlayer
-local leaderstats = player:WaitForChild("leaderstats")
-local rebirthsStat = leaderstats:WaitForChild("Rebirths")
-
+-- Tracker variables
 local startTime = tick()
 local sessionRebirths = rebirthsStat.Value
 
+-- UI Labels
 local timeLabel = RebirthFolder:AddLabel("Time")
 timeLabel.TextSize = 26
 timeLabel.Font = Enum.Font.PatrickHand
@@ -239,6 +242,7 @@ local rphLabel = RebirthFolder:AddLabel("Rebirths / Hour: 0")
 rphLabel.TextSize = 26
 rphLabel.Font = Enum.Font.PatrickHand
 
+-- Rate calculation
 local function calculateRates(gained, elapsedSeconds)
 	if elapsedSeconds <= 0 then return 0, 0 end
 	local minutes = elapsedSeconds / 60
@@ -248,6 +252,7 @@ local function calculateRates(gained, elapsedSeconds)
 	return rpm, rph
 end
 
+-- Update loop
 task.spawn(function()
 	while task.wait(1) do
 		local elapsed = tick() - startTime
