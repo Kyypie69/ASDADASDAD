@@ -363,8 +363,8 @@ end)
  
 textLabel.Text = "ANTI AFK"
 		end
-                    },
-                    {
+	end
+})
 
 
     -- Hide All Frames
