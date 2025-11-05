@@ -151,7 +151,7 @@ end)
 --------------------------------------------------------------------
 local Window = Library:CreateWindow({
     Title = "MARKYYxPRNHUB",
-    SubTitle = "Kyy Pie",
+    SubTitle = "Kyy Pie x Cream Fyy",
     Size = UDim2.fromOffset(450,350),
     TabWidth = 160,
     Acrylic = false,
@@ -161,7 +161,7 @@ local Window = Library:CreateWindow({
 --------------------------------------------------------------------
 -- 4.  Tabs  (same order as UILib)
 --------------------------------------------------------------------
-local farmTab  = Window:AddTab({Title = "Packs Farm",    Icon = ""})        -- lightning bolt
+local farmTab  = Window:AddTab({Title = "OP Farm",    Icon = "pick-axe"})        -- lightning bolt
 local Stats = Window:AddTab({Title = "Stats", Icon = "bar-chart-2"})-- stats bars
 local Rock  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
 local Killer  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
@@ -170,12 +170,14 @@ local Crystal  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- c
 local Gift  = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
 local Credits  = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
 
+local farmTab  = Window:AddTab({Title = "OP Farm",    Icon = "pick-axe"})        -- lightning bolt
+local farmSection = farmTab:AddToggle("FARMING")
 
-farmSection = AddToggle("Fast Rebirth", {
+farmSection:AddToggle("Fast Rebirth", {
         Title = "Fast Rebirth",
         Default = false,
         Callback = function(v)
-             getgenv().AutoFarming = state
+    getgenv().AutoFarming = state
     if state then
         task.spawn(function()
             local a = ReplicatedStorage
