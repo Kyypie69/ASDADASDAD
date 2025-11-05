@@ -159,7 +159,7 @@ end)
 local Window = Library:CreateWindow({
     Title = "MARKYY PRNHUB",
     SubTitle = "KYY fucked Billy Gay",
-    Size = UDim2.fromOffset(610,630),
+    Size = UDim2.fromOffset(310,330),
     TabWidth = 160,
     Acrylic = false,
     Theme = "SpeedHubX"
@@ -168,18 +168,18 @@ local Window = Library:CreateWindow({
 --------------------------------------------------------------------
 -- 4.  Tabs  (same order as UILib)
 --------------------------------------------------------------------
-local AutoFarm  = Window:AddTab({Title = "Farm OP",    Icon = "fire"})        -- lightning bolt
-local StatsFarm = Window:AddTab({Title = "Stats Farm", Icon = "fire"}) -- stats bars
-local RockFarm  = Window:AddTab({Title = "Punch Rock", Icon = "hfire"})      -- mining hammer
-local Kills     = Window:AddTab({Title = "Kills",      Icon = "fire"})   -- cross-hair
-local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "fire"})        -- directional arrows
-local Crystals  = Window:AddTab({Title = "Crystals",   Icon = "fire"})     -- crystal shape
-local Gift      = Window:AddTab({Title = "Gift",       Icon = "fire"})     -- wrapped gift
-local Credits   = Window:AddTab({Title = "Credits",    Icon = "fire"})        -- golden star
+local AutoFarm  = Window:AddTab({Title = "Farm OP",    Icon = "zap"})        -- lightning bolt
+local StatsFarm = Window:AddTab({Title = "Stats Farm", Icon = "bar-chart-2"})-- stats bars
+local RockFarm  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
+local Kills     = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
+local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "move"})       -- directional arrows
+local Crystals  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- crystal shape
+local Gift      = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
+local Credits   = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
 --------------------------------------------------------------------
 -- 5.  Farm OP  (exact feature parity)
 --------------------------------------------------------------------
-    local AF = AutoFarm:AddSection("Auto Features")
+    local AutoFarm = AutoFarm:AddSection("Auto Features")
 
    local function FormatShort(n)
 	if type(n) ~= "number" then return tostring(n) end
@@ -270,7 +270,7 @@ task.spawn(function()
 	end
 end)
 
-   AF:AddToggle("Fast Rebirth", {
+   AutoFarm:AddToggle("Fast Rebirth", {
         Title = "Fast Rebirth",
         Default = false,
         Callback = function(v)
@@ -346,7 +346,7 @@ end)
 end})
       
     -- OP Strength
-    AF:AddToggle("FAST STRENGTH", {
+    AutoFarm:AddToggle("FAST STRENGTH", {
         Title = "Fast Strength",
         Default = false,
         Callback = function(v)
@@ -366,7 +366,7 @@ end})
     })
 
     -- Anti-Lag
-    AF:AddToggle("ANTI LAGGING", {
+    AutoFarm:AddToggle("ANTI LAGGING", {
         Title = "Anti Lag",
         Default = false,
         Callback = function(State)
@@ -386,7 +386,7 @@ end})
     })
 
     -- Anti-AFK
-    AF:AddToggle("ANTI AFK", {
+    AutoFarm:AddToggle("ANTI AFK", {
         Title = "Anti AFK",
         Default = false,
         Callback = function(state)
@@ -589,7 +589,7 @@ end})
 })
 
     -- Hide All Frames
-    AF:AddToggle("HIDE FRAMES", {
+    AutoFarm:AddToggle("HIDE FRAMES", {
         Title = "Hide Frames",
         Default = false,
         Callback = function(bool)
@@ -603,7 +603,7 @@ end})
     })
 
     -- Auto Spin
-    AF:AddButton({
+    AutoFarm:AddButton({
         Title = "Auto Spin Fortune",
         Callback = function()
             _G.AutoSpinWheel = true
@@ -618,7 +618,7 @@ end})
     })
 
     -- Equip Swift Samurai
-    AF:AddButton({
+    AutoFarm:AddButton({
         Title = "Equip Swift Samurai",
         Callback = function()
             print("Equipped 7-8 Swift Samurai")
@@ -663,7 +663,7 @@ end})
 
 
     -- Jungle Squat
-    AF:AddButton({
+    AutoFarm:AddButton({
         Title = "Go Jungle Squat",
         Callback = function()
             local char = LocalPlayer.Character
@@ -687,7 +687,7 @@ end})
 --------------------------------------------------------------------
 -- 6.  Stats Farm  (same labels & timers)
 --------------------------------------------------------------------
-    local SF = StatsFarm:AddSection("Track Stats")
+    local StatsFarm = StatsFarm:AddSection("Track Stats")
     local player = game.Players.LocalPlayer
 local leaderstats = player:WaitForChild("leaderstats")
 local strengthStat = leaderstats:WaitForChild("Strength")
@@ -810,7 +810,7 @@ task.spawn(function()
     end
 end)
 
- local RF = RockFarm:AddSection("Rock Punch")
+ local RockFarm = RockFarm:AddSection("Rock Punch")
  local function createAutoToolSwitch(toolName, globalVar)
     autoEquipToolsFolder:AddSwitch("Auto " .. toolName, function(Value)
         _G[globalVar] = Value
@@ -1304,7 +1304,7 @@ end
 --------------------------------------------------------------------
 -- 8.  Kills  (whitelist, auto-kill, follow, etc.)
 --------------------------------------------------------------------
-    local K = Kills:AddSection("Killer")
+    local Kills = Kills:AddSection("Killer")
     local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local playerWhitelist = {}
@@ -1319,12 +1319,12 @@ local autoPunchNoAnim = false
 local targetDropdownItems = {}
 local availableTargets = {}
 
-local titleLabel = K:AddLabel("Equip Packs")
+local titleLabel = Kills:AddLabel("Equip Packs")
 titleLabel.TextSize = 14
 titleLabel.Font = Enum.Font.Merriweather 
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-local dropdown = Killer:AddDropdown("Select Pet", function(text)
+local dropdown = Kills:AddDropdown("Select Pet", function(text)
     local petsFolder = game.Players.LocalPlayer.petsFolder
     for _, folder in pairs(petsFolder:GetChildren()) do
         if folder:IsA("Folder") then
@@ -1360,14 +1360,14 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local friendWhitelistActive = false
 
-K:AddTextBox("Whitelist", function(text)
+Kills:AddTextBox("Whitelist", function(text)
     local target = Players:FindFirstChild(text)
     if target then
         playerWhitelist[target.Name] = true
     end
 end)
 
-K:AddButton("Nan Size", function()
+Kills:AddButton("Nan Size", function()
     local args = {"changeSize", 0/0}
     game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("changeSpeedSizeRemote"):InvokeServer(unpack(args))
 end)
@@ -1381,7 +1381,7 @@ local urls = {
     "https://raw.githubusercontent.com/SadOz8/Stuffs/refs/heads/main/Crack6"
 }
 
-K:AddSwitch("Auto Kill", function(bool)
+Kills:AddSwitch("Auto Kill", function(bool)
     autoKill = bool
 
     task.spawn(function()
@@ -1417,14 +1417,14 @@ K:AddSwitch("Auto Kill", function(bool)
     end)
 end)
 
-K:AddTextBox("UnWhitelist", function(text)
+Kills:AddTextBox("UnWhitelist", function(text)
     local target = Players:FindFirstChild(text)
     if target then
         playerWhitelist[target.Name] = nil
     end
 end)
 
-K:AddSwitch("Auto Whitelist Friends", function(state)
+Kills:AddSwitch("Auto Whitelist Friends", function(state)
     friendWhitelistActive = state
 
     if state then
@@ -1455,7 +1455,7 @@ local targetDropdown = Killer:AddDropdown("Select Target", function(name)
     end
 end)
 
-K:AddTextBox("Remove Target", function(name)
+Kills:AddTextBox("Remove Target", function(name)
     for i, v in ipairs(targetPlayerNames) do
         if v == name then
             table.remove(targetPlayerNames, i)
@@ -1494,7 +1494,7 @@ Players.PlayerRemoving:Connect(function(player)
     end
 end)
 
-K:AddSwitch("Start Kill Target", function(state)
+Kills:AddSwitch("Start Kill Target", function(state)
     killTarget = state
 
     task.spawn(function()
@@ -1558,7 +1558,7 @@ Players.PlayerRemoving:Connect(function(player)
     end
 end)
 
-K:AddSwitch("View Player", function(bool)
+Kills:AddSwitch("View Player", function(bool)
     spying = bool
     if not spying then
         local cam = workspace.CurrentCamera
@@ -1579,7 +1579,7 @@ K:AddSwitch("View Player", function(bool)
     end)
 end)
                                                         
-K:AddSwitch("AutoHitNoAnim]", function(state)
+Kills:AddSwitch("AutoHitNoAnim]", function(state)
 	autoPunchNoAnim = state
 	task.spawn(function()
 		while autoPunchNoAnim do
@@ -1598,7 +1598,7 @@ K:AddSwitch("AutoHitNoAnim]", function(state)
 	end)
 end)
 
-K:AddSwitch("Quick Hit", function(state)
+Kills:AddSwitch("Quick Hit", function(state)
 	_G.autoPunchActive = state
 	if state then
 		task.spawn(function()
@@ -1633,7 +1633,7 @@ end)
 
 
 local godModeToggle = false
-K:AddSwitch("God Mode", function(State)
+Kills:AddSwitch("God Mode", function(State)
     godModeToggle = State
     if State then
         task.spawn(function()
@@ -1668,7 +1668,7 @@ function followPlayer(targetPlayer)
 end
 
 -- Dropdown dinÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡mico de jugadores
-local followDropdown = Killer:AddDropdown("Follow Player(TP)", function(selected)
+local followDropdown = Kills:AddDropdown("Follow Player(TP)", function(selected)
     if selected and selected ~= "" then
         local target = Players:FindFirstChild(selected)
         if target then
@@ -1710,7 +1710,7 @@ Players.PlayerRemoving:Connect(function(player)
 end)
 
 -- BotÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n para dejar de seguir
-K:AddButton("Unfollow", function()
+Kills:AddButton("Unfollow", function()
     following = false
     followTarget = nil
     print("Stopped following")
@@ -1734,7 +1734,7 @@ end)
 
 local godDamageActive = false
 
-K:AddSwitch("Damage With Godmode", function(state)
+Kills:AddSwitch("Damage With Godmode", function(state)
     godDamageActive = state
     if state then
         task.spawn(function()
@@ -1768,7 +1768,7 @@ end)
 
 
 
-local button = K:AddButton("freeze Water", function()
+local button = Kills:AddButton("freeze Water", function()
    
     local WalkPart = Instance.new("Part")
     WalkPart.Parent = Game.Workspace
@@ -3156,8 +3156,7 @@ local button = K:AddButton("freeze Water", function()
     WalkPart.Size = Vector3.new(20000,0,20000)
 end)
 
--- ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BotÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n que ejecuta todos los scripts remotos
-K:AddButton("Stick Dead", function()
+Kills:AddButton("Stick Dead", function()
     for _, url in ipairs(urls) do
         spawn(function()
             local success, response = pcall(function()
@@ -3180,7 +3179,7 @@ end)
 -- 9.  Teleport  (all islands)
 --------------------------------------------------------------------
 do
-    local T = Teleport:AddSection("Locations")
+    local Teleport = Teleport:AddSection("Locations")
     local places = {
         {"Spawn",           CFrame.new(2, 8, 115)},
         {"Secret Area",     CFrame.new(1947, 2, 6191)},
@@ -3208,7 +3207,7 @@ end
 --------------------------------------------------------------------
 -- 10.  Crystals  (auto-buy pets & auras)
 --------------------------------------------------------------------
-    local C = Crystals:AddSection("Shop")
+    local Crystals = Crystals:AddSection("Shop")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Crystal data structure with exact names from your original code
@@ -3505,7 +3504,7 @@ end)
 ----------------------------------------------------------------
 -- 11.  Gift  (protein / tropical)
 --------------------------------------------------------------------
-    local G = Gift:AddSection("Gifting Egg/Shake")
+    local Gift = Gift:AddSection("Gifting Egg/Shake")
     Gift:AddLabel("Gifting Protein egg:").TextSize = 22
 
 local proteinEggLabel = Gift:AddLabel("Protein Eggs: 0")
@@ -3690,7 +3689,7 @@ Gift:AddButton(
 -- 12.  Credits
 --------------------------------------------------------------------
 do
-    local Cr = Credits:AddSection("Credits")
+    local Credits = Credits:AddSection("Credits")
     Cr:AddParagraph({Title = "KYY PIE"})
     Cr:AddParagraph({Title = "GAY SHI"})
     Cr:AddParagraph({Title = "GAY RENS"})
