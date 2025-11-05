@@ -168,20 +168,19 @@ local Window = Library:CreateWindow({
 --------------------------------------------------------------------
 -- 4.  Tabs  (same order as UILib)
 --------------------------------------------------------------------
-local AutoFarm  = Window:AddTab({Title = "Farm OP",    Icon = "zap"})        -- lightning bolt
-local StatsFarm = Window:AddTab({Title = "Stats Farm", Icon = "bar-chart-2"})-- stats bars
-local RockFarm  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
-local Kills     = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
-local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "move"})       -- directional arrows
-local Crystals  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- crystal shape
-local Gift      = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
-local Credits   = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
+local farmTab  = Window:AddTab({Title = "Farm OP",    Icon = "lightning"})        -- lightning bolt
+local statsTab = Window:AddTab({Title = "Stats Farm", Icon = "bar-chart-2"})-- stats bars
+local rockTab  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
+local killTab  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
+local teleportTab  = Window:AddTab({Title = "Teleport",   Icon = "move"})       -- directional arrows
+local crystalTab  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- crystal shape
+local giftTab  = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
+local creditTab  = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
 --------------------------------------------------------------------
 -- 5.  Farm OP  (exact feature parity)
 --------------------------------------------------------------------
-    local AutoFarm = AutoFarm:AddSection("Auto Features")
-
-   local function FormatShort(n)
+    local farmSection = farmTab:AddSection("Auto Features")
+	local function FormatShort(n)
 	if type(n) ~= "number" then return tostring(n) end
 	if n >= 1e9 then
 		return (string.format('%.1f', n/1e9)):gsub('%.0','') .. 'B'
