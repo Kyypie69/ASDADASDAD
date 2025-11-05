@@ -1,4 +1,11 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyypie69/Library.UI/refs/heads/main/Speedhub.UI.lua"))()
+local VirtualUser = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    wait(1)
+    VirtualUser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
