@@ -296,7 +296,7 @@ farmSection:AddToggle("Anti LAG", {
     })
 
     -- Anti-AFK
-farmSection:AddToggle("Anti AFK", {
+farmSection:AddButton("Anti AFK", {
         Title = "Anti AFK",
         Default = false,
         Callback = function(state)
@@ -528,10 +528,10 @@ farmSection:AddToggle("Spin Wheel", {
     })
 
     -- Equip Swift Samurai
-farmSection:AddToggle("Equip Packs", {
+farmSection:AddButton("Equip Packs", {
         Title = "Equip Swift Samurai",
         Callback = function()
-            print("Equipped 7-8 Swift Samurai")
+        print("Equipped 7-8 Swift Samurai")
 
     local LocalPlayer = game:GetService("Players").LocalPlayer
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -573,7 +573,7 @@ end})
 
 
     -- Jungle Squat
-farmSection:AddToggle("TP Jungle Squat", {
+farmSection:AddButton("TP Jungle Squat", {
         Title = "Go Jungle Squat",
         Callback = function()
             local char = LocalPlayer.Character
