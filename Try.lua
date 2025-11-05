@@ -1,16 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyypie69/Library.UI/refs/heads/main/Speedhub.UI.lua"))()
 
---------------------------------------------------------------------
--- 2.  Anti-AFK  (kept from original)
---------------------------------------------------------------------
-local VirtualUser = game:GetService("VirtualUser")
-game:GetService("Players").LocalPlayer.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    wait(1)
-    VirtualUser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-end)
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local Stats = game:GetService("Stats")
@@ -160,7 +149,7 @@ end)
 --------------------------------------------------------------------
 -- 3.  Window
 --------------------------------------------------------------------
-local Window = SpeedHub:CreateWindow({
+local Window = Library:CreateWindow({
     Title = "MARKYY PRNHUB",
     SubTitle = "KYY fucked Billy Gay",
     Size = UDim2.fromOffset(610,630),
@@ -172,14 +161,14 @@ local Window = SpeedHub:CreateWindow({
 --------------------------------------------------------------------
 -- 4.  Tabs  (same order as UILib)
 --------------------------------------------------------------------
-local AutoFarm  = Window:AddTab({Title = "Farm OP",    Icon = "zap"})        -- lightning bolt
-local StatsFarm = Window:AddTab({Title = "Stats Farm", Icon = "bar-chart-2"}) -- stats bars
-local RockFarm  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})      -- mining hammer
-local Kills     = Window:AddTab({Title = "Kills",      Icon = "crosshair"})   -- cross-hair
-local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "move"})        -- directional arrows
-local Crystals  = Window:AddTab({Title = "Crystals",   Icon = "diamond"})     -- crystal shape
-local Gift      = Window:AddTab({Title = "Gift",       Icon = "present"})     -- wrapped gift
-local Credits   = Window:AddTab({Title = "Credits",    Icon = "star"})        -- golden star
+local AutoFarm  = Window:AddTab({Title = "Farm OP",    Icon = "fire"})        -- lightning bolt
+local StatsFarm = Window:AddTab({Title = "Stats Farm", Icon = "fire"}) -- stats bars
+local RockFarm  = Window:AddTab({Title = "Punch Rock", Icon = "hfire"})      -- mining hammer
+local Kills     = Window:AddTab({Title = "Kills",      Icon = "fire"})   -- cross-hair
+local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "fire"})        -- directional arrows
+local Crystals  = Window:AddTab({Title = "Crystals",   Icon = "fire"})     -- crystal shape
+local Gift      = Window:AddTab({Title = "Gift",       Icon = "fire"})     -- wrapped gift
+local Credits   = Window:AddTab({Title = "Credits",    Icon = "fire"})        -- golden star
 --------------------------------------------------------------------
 -- 5.  Farm OP  (exact feature parity)
 --------------------------------------------------------------------
