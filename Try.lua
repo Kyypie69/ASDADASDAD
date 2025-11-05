@@ -1,12 +1,3 @@
---[[
-    SHI for SpeedHubX  (drop-in rewrite)
-    All credits go to the original authors (Shi, SailynnxShi, H3LL_KYY, etc.)
-    This is only a SYNTAX port – no logic was changed.
-]]
-
---------------------------------------------------------------------
--- 1.  Require SpeedHubX library
---------------------------------------------------------------------
 local SpeedHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyypie69/Library.UI/refs/heads/main/GUI.lua"))()
 
 --------------------------------------------------------------------
