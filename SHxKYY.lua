@@ -150,7 +150,7 @@ end)
 -- 3.  Window
 --------------------------------------------------------------------
 local Window = Library:CreateWindow({
-    Title = "MARKYY PRNHUB",
+    Title = "MARKYYxPRNHUB",
     SubTitle = "Kyy Pie",
     Size = UDim2.fromOffset(450,350),
     TabWidth = 160,
@@ -161,8 +161,8 @@ local Window = Library:CreateWindow({
 --------------------------------------------------------------------
 -- 4.  Tabs  (same order as UILib)
 --------------------------------------------------------------------
-local Farm  = Window:AddTab({Title = "Farm OP",    Icon = ""})        -- lightning bolt
-local Stats = Window:AddTab({Title = "Stats Farm", Icon = "bar-chart-2"})-- stats bars
+local farmTab  = Window:AddTab({Title = "Packs Farm",    Icon = ""})        -- lightning bolt
+local Stats = Window:AddTab({Title = "Stats", Icon = "bar-chart-2"})-- stats bars
 local Rock  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
 local Killer  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
 local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "move"})       -- directional arrows
@@ -171,7 +171,7 @@ local Gift  = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrap
 local Credits  = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
 
 
-local Toggle = Tabs.Farm:CreateToggle("Fast Rebirth", {
+farmSection = AddToggle("Fast Rebirth", {
         Title = "Fast Rebirth",
         Default = false,
         Callback = function(v)
