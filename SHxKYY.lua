@@ -161,14 +161,6 @@ local Window = Library:CreateWindow({
 --------------------------------------------------------------------
 -- 4.  Tabs  (same order as UILib)
 --------------------------------------------------------------------
-local farmTab  = Window:AddTab({Title = "OP Farm",    Icon = "pick-axe"})        -- lightning bolt
-local Stats = Window:AddTab({Title = "Stats", Icon = "bar-chart-2"})-- stats bars
-local Rock  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
-local Killer  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
-local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "move"})       -- directional arrows
-local Crystal  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- crystal shape
-local Gift  = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
-local Credits  = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
 
 local farmTab  = Window:AddTab({Title = "OP Farm",    Icon = "pick-axe"})        -- lightning bolt
 local farmSection = farmTab:AddToggle("FARMING")
@@ -247,7 +239,15 @@ farmSection:AddToggle("Fast Rebirth", {
         end)
     end
 end})
-      
+
+local Stats = Window:AddTab({Title = "Stats", Icon = "bar-chart-2"})-- stats bars
+local Rock  = Window:AddTab({Title = "Punch Rock", Icon = "hammer"})     -- mining hammer
+local Killer  = Window:AddTab({Title = "Kills",      Icon = "crosshair"})  -- cross-hair
+local Teleport  = Window:AddTab({Title = "Teleport",   Icon = "move"})       -- directional arrows
+local Crystal  = Window:AddTab({Title = "Crystals",   Icon = "gem"})        -- crystal shape
+local Gift  = Window:AddTab({Title = "Gift",       Icon = "gift"})       -- wrapped gift
+local Credits  = Window:AddTab({Title = "Credits",    Icon = "star"})       -- golden star
+
     -- OP Strength
  local Toggle = Tabs.Farm:CreateToggle("FAST STRENGTH", {
         Title = "Fast Strength",
