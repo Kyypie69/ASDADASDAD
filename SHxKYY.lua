@@ -590,8 +590,7 @@ farmSection:AddSwitch("Anti AFK", function(state)
         if game.CoreGui:FindFirstChild("thisoneissocoldww") then
             game.CoreGui.thisoneissocoldww:Destroy()
         end
-    end
-end)
+    end)
 --------------------------------------------------------------------
 -- 6.  Stats Farm  (same labels & timers)
 --------------------------------------------------------------------
