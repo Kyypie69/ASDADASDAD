@@ -25,13 +25,13 @@ local EleriumV2_UI = loadstring(game:HttpGet(
 
 -- Create the main window with Elerium V2 configuration
 local c2 = EleriumV2_UI.new({
-    MainColor = Color3.fromRGB(138, 0, 0),  -- Same color as original
+    MainColor = Color3.fromRGB(0, 0, 139),  -- Same color as original
     ToggleKey = Enum.KeyCode.Insert,        -- Added required toggle key
-    MinSize = Vector2.new(600, 600)         -- Same size as original
+    MinSize = Vector2.new(500, 500)         -- Same size as original
 })
 
 -- Create the main window (equivalent to library:AddWindow)
-local aw = c2:CreateWindow("Silence | Farming", {})
+local aw = c2:CreateWindow("KYY HUB | Packs Farming", {})
 
 -- Hide blocked frames (same functionality)
 local replicatedStorage = game:GetService("ReplicatedStorage")
