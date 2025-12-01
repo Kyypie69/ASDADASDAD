@@ -478,7 +478,7 @@ local function fastRepLoop()
 end
 
 -- Fast Strength Rep Speed Textbox
-c4:AddTextBox("Rep Speed", function(value)
+c4:AddTextBox("Rep Speed","20",function(value)
     local num = tonumber(value)
     if num and num > 0 then
         repsPerTick = math.floor(num)
