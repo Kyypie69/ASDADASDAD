@@ -1,21 +1,28 @@
--- Silence V2 Farming Logic Transferred to Elerium V2 UI
--- Made by Henne ♥️ (Adapted for Elerium V2 UI)
+-- =========  Elerium V2  (2025-12)  =========
+local h = game:HttpGet("https://raw.githubusercontent.com/Kyypie69/Library.UI/main/KYY.luau")
+local ok, lib = pcall(loadstring, h)
+if not ok or not lib then
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+        Title = "Elerium V2", Text = "Could not load library", Duration = 5
+    })
+    return
+end
+lib()                       -- runs the loader; creates global «Elerium»
+local UI = Elerium          -- the library table we will use everywhere
 
--- Load the Elerium V2 UI Library
-local EleriumV2_UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyypie69/Library.UI/refs/heads/main/KYY.luau"))()
-
--- Create the main window
-local mainWindow = EleriumV2_UI:new({
-    MainColor = Color3.fromRGB(138, 0, 0), -- Adapted from SilenceV2's main_color
-    ToggleKey = Enum.KeyCode.RightControl, -- Example toggle key, change as needed
-    MinSize = Vector2.new(600, 600),
-    Name = "Silence | Farming (Elerium V2)" -- Window title
+-- create the window
+local main = UI:new({
+    Name        = "Silence | Farming (Elerium V2)",
+    MainColor   = Color3.fromRGB(138,0,0),
+    ToggleKey   = Enum.KeyCode.RightControl,
+    MinSize     = Vector2.new(600,600)
 })
 
--- Create tabs
-local fastRebirthTab = mainWindow:CreateTab("Fast Rebirth", "Fast Rebirth")
-local fastFarmTab = mainWindow:CreateTab("Fast Farm", "Fast Farm")
-local infoTab = mainWindow:CreateTab("Info", "Info")
+-- tabs
+local fastRebirthTab = main:CreateTab("Fast Rebirth","Fast Rebirth")
+local fastFarmTab    = main:CreateTab("Fast Farm","Fast Farm")
+local infoTab        = main:CreateTab("Info","Info")
+-- ============================================
 
 -- Game services and player variables
 local Players = game:GetService("Players")
