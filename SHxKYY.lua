@@ -8,9 +8,9 @@ local EleriumV2_UI = loadstring(game:HttpGet(
     "https://raw.githubusercontent.com/Kyypie69/Library.UI/refs/heads/main/KYY.luau"))()
 
 local c2 = EleriumV2_UI.new({
-    MainColor = Color3.fromRGB(138, 43, 226),
+    MainColor = Color3.fromRGB(25, 25, 112),
     ToggleKey = Enum.KeyCode.Insert,
-    MinSize = Vector2.new(600, 600)
+    MinSize   = Vector2.new(500, 350)
 })
 
 local aw = c2:CreateWindow("Elerium V2xKYY | Enhanced Farming", {})
