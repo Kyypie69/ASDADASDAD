@@ -5,8 +5,8 @@ local Library = loadstring(game:HttpGet(
 local Win = Library.new({
     MainColor      = Color3.fromRGB(25, 25, 112),
     ToggleKey      = Enum.KeyCode.Insert,
-    MinSize        = Vector2.new(400,500),
-    CanResize      = true
+    MinSize        = Vector2.new(400,400),
+    CanResize      = false
 })
 
 local Player     = game:GetService("Players").LocalPlayer
