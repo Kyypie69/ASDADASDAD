@@ -30,6 +30,39 @@ local rebirthsStat  = LP:WaitForChild("leaderstats"):WaitForChild("Rebirths")
 local strengthStat  = LP:WaitForChild("leaderstats"):WaitForChild("Strength")
 
 -- ===================================================================
+--  REBIRTH-PACE LABEL  (live)
+-- ===================================================================
+local paceLabel = Tab:AddLabel("Pace: 0 /h  |  0 /d  |  0 /w")
+
+local lastRebirth = rebirthsStat.Value
+local lastTime    = os.clock()
+local history     = {} -- store {delta, dt}
+
+local function updatePace()
+    local nowReb = rebirthsStat.Value
+    local nowTm  = os.clock()
+    local delta  = nowReb - lastRebirth
+    if delta <= 0 then return end          -- nothing gained
+    local dt     = nowTm - lastTime
+    table.insert(history, {d = delta, t = dt})
+    -- keep only last 10 samples for smooth average
+    if #history > 10 then table.remove(history, 1) end
+    lastRebirth, lastTime = nowReb, nowTm
+
+    -- total rebirths gained / total time
+    local totalD, totalT = 0, 0
+    for _,v in ipairs(history) do totalD = totalD + v.d; totalT = totalT + v.t end
+    local rps = totalD / math.max(totalT, 1e-6)
+    local rph = rps * 3600
+    local rpd = rph * 24
+    local rpw = rpd * 7
+    paceLabel:SetText(string.format("Pace: %s /h  |  %s /d  |  %s /w",
+                                    formatNumber(rph), formatNumber(rpd), formatNumber(rpw)))
+end
+
+rebirthsStat.Changed:Connect(updatePace)
+
+-- ===================================================================
 --  UTILITIES
 -- ===================================================================
 local function notify(title,text,icon,time)
