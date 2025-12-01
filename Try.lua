@@ -3,10 +3,10 @@ local Library = loadstring(game:HttpGet(
     "https://raw.githubusercontent.com/Kyypie69/Library.UI/refs/heads/main/KYY.luau"))()
 
 local Win = Library.new({
-    MainColor      = Color3.fromRGB(138,43,226),
+    MainColor      = Color3.fromRGB(25, 25, 112),
     ToggleKey      = Enum.KeyCode.Insert,
-    MinSize        = Vector2.new(550,650),
-    CanResize      = false
+    MinSize        = Vector2.new(400,500),
+    CanResize      = true
 })
 
 local Player     = game:GetService("Players").LocalPlayer
@@ -94,7 +94,7 @@ local function antiLag()
 end
 
 -------------------- window / tabs --------------------
-local Main = Win:CreateWindow("Silence V2  |  Elerium","")
+local Main = Win:CreateWindow("KYY HUB 6.9  |  PACKS Farming","ULOL!")
 local RebirthTab = Main:CreateTab("Fast Rebirth")
 local StrengthTab= Main:CreateTab("Fast Strength")
 
