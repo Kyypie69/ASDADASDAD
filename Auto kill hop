@@ -1,0 +1,182 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+ 
+-- Excluded display names
+local excludedNames = {
+    ["SenV1"] = false,
+    ["SenV2"] = false,
+}
+ 
+-- Server hop function to find 18 or 19-player servers
+local placeId = game.PlaceId
+ 
+local function find18Or19PlayerServer()
+    local cursor = nil
+    repeat
+        local url = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Desc&limit=100"
+        if cursor then
+            url = url.."&cursor="..cursor
+        end
+ 
+        local success, response = pcall(function()
+            return HttpService:JSONDecode(game:HttpGet(url))
+        end)
+ 
+        if success and response and response.data then
+            for _, server in ipairs(response.data) do
+                if (server.playing == 18) and server.maxPlayers == 20 and server.id ~= game.JobId then
+                    -- Found a server with 18 or 19 players out of 20
+                    return server.id
+                end
+            end
+            cursor = response.nextPageCursor
+        else
+            break
+        end
+    until not cursor
+ 
+    return nil -- No server found
+end
+ 
+-- Function to hop to a server
+local function hopToServer()
+    local serverId = find18Or19PlayerServer()
+    if serverId then
+        TeleportService:TeleportToPlaceInstance(placeId, serverId, LocalPlayer)
+    else
+        warn("No 18 or 19-player servers found! Retrying in 5 seconds...")
+        task.delay(1, hopToServer) -- Retry after 5 seconds
+    end
+end
+ 
+-- Start hopping after 38 seconds
+task.delay(48, hopToServer)
+ 
+-- Died listener setup to hop server upon death
+local function setupDiedListener(character)
+    local hum = character:FindFirstChildOfClass("Humanoid")
+    if hum then
+        hum.Died:Connect(function()
+            hopToServer()
+        end)
+    else
+        character.ChildAdded:Connect(function(child)
+            if child:IsA("Humanoid") then
+                child.Died:Connect(function()
+                    hopToServer()
+                end)
+            end
+        end)
+    end
+end
+ 
+-- Setup on current character
+if LocalPlayer.Character then
+    setupDiedListener(LocalPlayer.Character)
+end
+ 
+-- Setup on future characters
+LocalPlayer.CharacterAdded:Connect(setupDiedListener)
+ 
+-- Detect if the player is in a game with the specific display name and hop
+task.spawn(function()
+    while true do
+        task.wait(2) -- Check every 2 seconds
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.DisplayName == "U3RT_SOVIETxKILLA" then
+                hopToServer()
+                return
+            end
+        end
+    end
+end)
+ 
+-- Healing loop (max health)
+task.spawn(function()
+    while true do
+        task.wait(0.3)
+        local char = LocalPlayer.Character
+        local hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.Health = hum.MaxHealth
+        end
+    end
+end)
+ 
+-- Bring all (using Durability vs Strength x6.5 rule)
+task.spawn(function()
+    while true do
+        task.wait(0.3)
+        local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        local myDurability = LocalPlayer:FindFirstChild("Durability") and LocalPlayer.Durability.Value
+ 
+        if root and myDurability then
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= LocalPlayer 
+                    and not excludedNames[player.DisplayName]
+                    and player.Character 
+                    and player.Character:FindFirstChild("HumanoidRootPart") then
+ 
+                    local stats = player:FindFirstChild("leaderstats")
+                    local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value
+ 
+                    if strength and strength < myDurability * 6.5 then
+                        local targetRoot = player.Character.HumanoidRootPart
+                        targetRoot.CFrame = root.CFrame * CFrame.new(math.random(-5,5), 0, math.random(-5,5))
+                    end
+                end
+            end
+        end
+    end
+end)
+ 
+-- Auto equip the Punch tool every 0.1 seconds
+task.spawn(function()
+    while true do
+        task.wait(0.1)  -- Wait for 0.1 seconds before checking again
+ 
+        -- Check if the tool exists in the backpack
+        local Backpack = LocalPlayer:WaitForChild("Backpack")
+        local tool = Backpack:FindFirstChild("Punch")
+ 
+        -- If the tool exists and is not equipped, equip it
+        if tool and LocalPlayer.Character then
+            local humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid and tool.Parent ~= LocalPlayer.Character then
+                humanoid:EquipTool(tool)
+            end
+        end
+    end
+end)
+ 
+ 
+-- Auto punch function
+task.spawn(function()
+    local Backpack = LocalPlayer:WaitForChild("Backpack")
+    local tool = Backpack:WaitForChild("Punch")
+ 
+    repeat task.wait() until LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
+    local humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    humanoid:EquipTool(tool)
+ 
+    while true do
+        task.wait(0.1)
+        if tool and tool.Parent == LocalPlayer.Character then
+            tool:Activate()
+        end
+    end
+end)
+ 
+-- Spin while killing (adds spinning effect)
+task.spawn(function()
+    while true do
+        task.wait(0.03)
+        local char = LocalPlayer.Character
+        local root = char and char:FindFirstChild("HumanoidRootPart")
+        if root then
+            root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(15), 0)
+        end
+    end
+end)
